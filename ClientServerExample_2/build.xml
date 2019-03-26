@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<project name="Ser321 Sample Browser for Student httpd server" default="targets">
+   <taskdef resource="cpptasks.tasks"/>
+   <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+   <property name="src.dir" value="src"/>
+   <property name="lib.dir" value="lib"/>
+   <property name="port.num" value="8080"/>
+   <property name="server.host" value="192.168.2.2"/>
+   <property name="classes.dir" value="classes"/>
+
+   <property environment="env"/>
+   <property name="ostype" value="${env.OSTYPE}"/>
+
+   <target name="targets">
+      <echo message="Targets are clean, prepare, build.server, build.client, targets"/>
+      <echo message="base directory is: ${basedir}"/>
+      <echo message="Your host when executing client should be whatever the ip of your server is. Port is 8080"/>
+      <echo message="execute your client with: java -cp classes ser321.http.client.BrowserStudent http://${server.host}:${port.num}/Ser321/index.html"/>
+      <echo message="execute your server with: java -cp classes ser321.http.server.webserver ${port.num}"/>
+   </target>
+
+   <path id="compile.classpath">
+      <pathelement location="${classes.dir}"/>
+   </path>
+
+   <target name="clean">
+      <delete dir="${classes.dir}" failonerror="false"/>
+      <delete dir="log" failonerror="false"/>
+      <delete dir="Cache" failonerror="false"/>
+   </target>
+
+   <target name="prepare">
+      <mkdir dir="${classes.dir}"/>
+      <mkdir dir="log"/>
+      <mkdir dir="Cache"/>
+   </target>
+
+   <target name="build.server" depends="prepare"
+          description="Compile Java client sources">
+     <!-- Compile Java classes as necessary -->
+     <echo message="execute server: java -cp classes ser321.http.server.webserver ${port.num}"/>
+     <javac srcdir="${src.dir}/server"
+            destdir="${classes.dir}"
+            includeantruntime="false">
+        <classpath refid="compile.classpath"/>
+     </javac>
+   </target>
+
+   <target name="build.client" depends="prepare"
+          description="Compile Java client sources">
+     <!-- Compile Java classes as necessary -->
+      <echo message="execute your client with: java -cp classes ser321.http.client.BrowserStudent http://${server.host}:${port.num}/Ser321/index.html"/>
+     <javac srcdir="${src.dir}/client"
+            destdir="${classes.dir}"
+            includeantruntime="false">
+        <classpath refid="compile.classpath"/>
+     </javac>
+   </target>
+
+   
+</project>
